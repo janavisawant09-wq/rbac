@@ -16,6 +16,21 @@ exports.createRole = async (req, res) => {
       }
     }
 
+    // Sanitize and validate permission ids
+    if (req.body && Array.isArray(req.body.permissions)) {
+      const sanitized = req.body.permissions.map(p => {
+        if (typeof p !== 'string') return p;
+        // remove surrounding angle brackets and quotes and whitespace
+        return p.replace(/^\s*<|>\s*$/g, '').replace(/^\"|\"$/g, '').trim();
+      });
+
+      const invalid = sanitized.filter(id => typeof id === 'string' && !/^[a-fA-F0-9]{24}$/.test(id));
+      if (invalid.length) {
+        return res.status(400).json({ message: 'Invalid permission id(s)', invalid });
+      }
+      req.body.permissions = sanitized;
+    }
+
     const role = await UserRole.create(req.body);
     res.status(201).json(role);
   } catch (error) {
@@ -57,11 +72,37 @@ exports.updateRole = async (req, res) => {
       }
     }
 
-    const role = await UserRole.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    // Sanitize and validate permission ids before update
+    if (req.body && Array.isArray(req.body.permissions)) {
+      const sanitized = req.body.permissions.map(p => {
+        if (typeof p !== 'string') return p;
+        return p.replace(/^\s*<|>\s*$/g, '').replace(/^\"|\"$/g, '').trim();
+      });
+
+      const invalid = sanitized.filter(id => typeof id === 'string' && !/^[a-fA-F0-9]{24}$/.test(id));
+      if (invalid.length) {
+        return res.status(400).json({ message: 'Invalid permission id(s)', invalid });
+      }
+      req.body.permissions = sanitized;
+    }
+
+      // If client tries to change roleName, ensure it's not used by another role
+      if (req.body && req.body.roleName) {
+        const existing = await UserRole.findOne({ roleName: req.body.roleName });
+        if (existing && existing._id.toString() !== req.params.id) {
+          return res.status(409).json({ message: 'Role name already in use' });
+        }
+      }
+
+      const role = await UserRole.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
     if (!role) return res.status(404).json({ message: 'Role not found' });
     res.json(role);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+      // Handle duplicate key error more clearly
+      if (error && error.code === 11000) {
+        return res.status(409).json({ message: 'Duplicate key error', error: error.message });
+      }
+      res.status(400).json({ error: error.message });
   }
 };
 

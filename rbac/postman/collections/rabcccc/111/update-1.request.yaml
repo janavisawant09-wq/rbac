@@ -1,0 +1,11 @@
+$kind: http-request
+name: update
+url: http://localhost:3000/api/roles/6a478c05841451fb2370f6f4
+method: PUT
+headers:
+  Content-Type: application/json
+  x-api-key: secret
+body:
+  type: json
+  content: '{"roleName":"superedmin","permissions":["6a479b2024f6ebb69bb35532"]}'
+order: 4503599512804800

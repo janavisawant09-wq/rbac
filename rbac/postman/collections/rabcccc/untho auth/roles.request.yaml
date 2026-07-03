@@ -1,0 +1,15 @@
+$kind: http-request
+name: roles
+url: http://localhost:3000/api/roles
+method: POST
+headers:
+  Content-Type: application/json
+  x-api-key: secret
+body:
+  type: json
+  content: |-
+    {
+        "roleName": "admin",
+        "permissions": []
+      }
+order: 4501963531337145

@@ -2,12 +2,13 @@ require('dotenv').config();
 const express = require('express');
 const roleRoutes = require('./routes/roleRoutes');
 const permissionRoutes = require('./routes/permissionRoutes');
+const { logger, attachUser } = require('./middlewear/auth');
 const connectDB = require('./config/db');
-const UserRole = require('./models/userRole');
-const Permission = require('./models/permissionModels');
 
 const app = express();
 app.use(express.json());
+app.use(logger);
+app.use(attachUser);
 
 connectDB();
 

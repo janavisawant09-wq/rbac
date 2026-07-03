@@ -1,0 +1,5 @@
+$kind: http-request
+name: all roles
+url: http://localhost:3000/api/roles
+method: GET
+order: 4494579037287816

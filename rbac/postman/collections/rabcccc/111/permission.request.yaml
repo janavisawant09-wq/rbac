@@ -1,0 +1,9 @@
+$kind: http-request
+url: http://localhost:3000/api/permissions
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: '{"actionName":"deleteUser"}'
+order: 4503589071537673

@@ -1,0 +1,18 @@
+$kind: http-request
+name: persmission
+url: http://localhost:3000/api/permissions
+method: POST
+headers:
+  Content-Type: application/json
+  x-api-key: secret
+body:
+  type: json
+  content: |-
+    {
+        "actionName": "View Roles",
+        "description": "Can view all roles",
+        "method": "GET",
+        "baseUrl": "/api/roles",
+        "path": "/"
+      }
+order: 3853175294675103

@@ -1,0 +1,5 @@
+$kind: http-request
+name: delete
+url: http://localhost:3000/api/permissions/6a479b2024f6ebb69bb35532
+method: DELETE
+order: 4370369245944992

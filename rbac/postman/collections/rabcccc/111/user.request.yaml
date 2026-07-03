@@ -1,0 +1,14 @@
+$kind: http-request
+name: user
+url: http://localhost:3000/api/roles
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+        "roleName": "myra",
+        "permissions": ["<permissionId1>", "<permissionId21>"]
+      }
+order: 4423626631126355

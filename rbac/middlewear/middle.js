@@ -1,7 +1,22 @@
+const mongoose = require("mongoose");
 const User = require("../models/user");
 
 const checkPermission = async (req, res, next) => {
     try {
+
+        if (!req.user || !req.user.id) {
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized - user not found"
+            });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(req.user.id)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid user id"
+            });
+        }
 
         const user = await User.findById(req.user.id)
             .populate({
@@ -25,14 +40,15 @@ const checkPermission = async (req, res, next) => {
             });
         }
 
-        const permissions = user.role.permissions;
+        const permissions = Array.isArray(user.role.permissions) ? user.role.permissions : [];
 
+        const requestPath = req.route?.path || req.path;
         const isAllowed = permissions.some(permission => {
 
             return (
                 permission.method.toUpperCase() === req.method &&
                 permission.baseUrl === req.baseUrl &&
-                permission.path === req.route.path &&
+                permission.path === requestPath &&
                 !permission.deletedAt
             );
 

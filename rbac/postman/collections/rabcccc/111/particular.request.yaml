@@ -1,0 +1,13 @@
+$kind: http-request
+name: particular
+url: http://localhost:3000/api/permissions/6a479b2024f6ebb69bb35532
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+        "description": "Can delete an existing user record"
+      }
+order: 4369800844950233

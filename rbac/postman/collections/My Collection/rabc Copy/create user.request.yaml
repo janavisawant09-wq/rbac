@@ -1,0 +1,15 @@
+$kind: http-request
+url: http://localhost:3000/api/roles
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"roleName\": \"manger\",\r
+
+    \  \"permissions\": [\"64a1b2c3d4e5f6a7b8c9d0e1\"]\r
+
+    }"
+auth:
+  type: noauth
+order: 3000
