@@ -1,4 +1,0 @@
-$kind: http-request
-url: http://localhost:3000/api/permissions
-method: GET
-order: 4126292443980604

@@ -1,7 +1,0 @@
-$kind: http-request
-name: all permission
-url: http://localhost:3000/api/permissions
-method: GET
-headers:
-  x-api-key: secret
-order: 1783083117453
